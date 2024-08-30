@@ -34,19 +34,25 @@
       ];
     };
     zshConf = import ./zsh.nix {
-      pkgs = pkgs;
-      lib = pkgs.lib;
+      inherit pkgs inputs system;
+      inherit (pkgs) lib;
       vim = vim.packages.${system}.default;
-      inherit inputs system;
     };
-    zsh = pkgs.writeShellScriptBin "zsh" ''
-      ZDOTDIR=${zshConf} ${pkgs.zsh}/bin/zsh
-    '';
+    zshMinimal = import ./zsh.nix {
+      inherit pkgs inputs system;
+      inherit (pkgs) lib vim;
+    };
+
+    mkZsh = conf:
+      pkgs.writeShellScriptBin "zsh" ''
+        ZDOTDIR=${conf} ${pkgs.zsh}/bin/zsh
+      '';
   in {
     packages = {
       x86_64-linux = rec {
-        inherit zsh;
+        zsh = mkZsh zshConf;
         default = zsh;
+        minimal = mkZsh zshMinimal;
       };
     };
   };
