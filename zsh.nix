@@ -41,7 +41,7 @@ in
       export EDITOR=${vimBin}
       export VISUAL=${mimBin}
       export BROWSER=${browserBin}
-      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin
+      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin
       export CUR_SHELL=zsh
       export TERM=xterm-256color
       export CDPATH=.:~:~/workspace:~/workspace/personal:~/workspace/duo
