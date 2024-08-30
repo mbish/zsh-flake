@@ -62,6 +62,7 @@ in
       alias mux="${tmuxinatorBin}"
       alias gco='$GIT checkout'
       alias bigterm="$TERM_PROGRAM -f \"xos4 Terminus:style=Regular:size=18\""
+      alias term="$TERM_PROGRAM"
       alias smallterm="$TERM_PROGRAM -f \"xos4 Terminus:style=Regular:size=12\""
       alias fixup="$GIT commit -C HEAD --amend -a"
       alias dirinit="${nixBin} flake new -t github:nix-community/nix-direnv ."
