@@ -31,7 +31,7 @@
     flake-utils,
     ...
   } @ inputs: let
-    systems = ["x86_64-linux" "armv7l-linux"];
+    systems = ["x86_64-linux" "armv7l-linux" "aarch64-linux"];
     build = system: let
       pkgs = import nixpkgs {
         inherit system;

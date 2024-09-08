@@ -1408,11 +1408,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1725757024,
-        "narHash": "sha256-ZE71Q1pYXLFTHdsmAUZlAGm8y5u2zztOzBtCuldyurE=",
+        "lastModified": 1725805543,
+        "narHash": "sha256-CWxGsDfIcUskb0VBBiLI7CLq4OuO2CdWAQUng0pDpFw=",
         "owner": "mbish",
         "repo": "st-flake",
-        "rev": "4328c285de90194629c5d89155540d1be46c912d",
+        "rev": "b33f7481d41cfebe73047236e2b278ad611e5960",
         "type": "github"
       },
       "original": {
