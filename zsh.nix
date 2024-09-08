@@ -12,7 +12,6 @@
   vimBin = "${vim}/bin/vim";
   ripgrepBin = "${pkgs.ripgrep}/bin/rg";
   batBin = "${pkgs.bat}/bin/bat";
-  stBin = "${inputs.st.packages.${system}.default}/bin/st";
   fdBin = "${pkgs.fd}/bin/fd";
   tmuxinatorBin = "${pkgs.tmuxinator}/bin/tmuxinator";
   gitBin = "${pkgs.git}/bin/git";
@@ -36,7 +35,6 @@ in
       }
 
       export GIT=${gitBin}
-      export TERM_PROGRAM="${stBin}"
       export ZSH="${oh-my-zsh-source}"
       export EDITOR=${vimBin}
       export VISUAL=${mimBin}
@@ -61,9 +59,6 @@ in
 
       alias mux="${tmuxinatorBin}"
       alias gco='$GIT checkout'
-      alias bigterm="$TERM_PROGRAM -f \"xos4 Terminus:style=Regular:size=18\""
-      alias term="$TERM_PROGRAM"
-      alias smallterm="$TERM_PROGRAM -f \"xos4 Terminus:style=Regular:size=12\""
       alias fixup="$GIT commit -C HEAD --amend -a"
       alias dirinit="${nixBin} flake new -t github:nix-community/nix-direnv ."
       alias edit=$EDITOR

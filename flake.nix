@@ -43,8 +43,15 @@
         inherit (pkgs) lib;
         vim = vim.packages.${system}.default;
         browser = "${pkgs.firefox}/bin/firefox";
-        extraConfig = builtins.concatStrings [
-          (import ./atuin.nix)
+        extraConfig = pkgs.lib.strings.concatStrings [
+          (import ./atuin.nix {
+            inherit (pkgs) lib;
+            inherit pkgs system inputs;
+          })
+          (import ./term.nix {
+            inherit (pkgs) lib;
+            inherit system inputs;
+          })
         ];
       };
       zshMinimal = import ./zsh.nix {
