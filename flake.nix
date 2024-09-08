@@ -18,6 +18,9 @@
       flake = true;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+    };
   };
 
   outputs = {
@@ -25,35 +28,42 @@
     vim,
     st,
     nixpkgs,
+    flake-utils,
     ...
   } @ inputs: let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {
-      inherit system;
-      overlays = [
-      ];
-    };
-    zshConf = import ./zsh.nix {
-      inherit pkgs inputs system;
-      inherit (pkgs) lib;
-      vim = vim.packages.${system}.default;
-    };
-    zshMinimal = import ./zsh.nix {
-      inherit pkgs inputs system;
-      inherit (pkgs) lib vim;
-    };
+    systems = ["x86_64-linux" "armv7l-linux"];
+    build = system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+        ];
+      };
+      zshConf = import ./zsh.nix {
+        inherit pkgs inputs system;
+        inherit (pkgs) lib;
+        vim = vim.packages.${system}.default;
+        browser = "${pkgs.firefox}/bin/firefox";
+        extraConfig = builtins.concatStrings [
+          (import ./atuin.nix)
+        ];
+      };
+      zshMinimal = import ./zsh.nix {
+        inherit pkgs inputs system;
+        inherit (pkgs) lib vim;
+        browser = "${pkgs.qutebrowser}/bin/qutebrowser";
+      };
 
-    mkZsh = conf:
-      pkgs.writeShellScriptBin "zsh" ''
-        ZDOTDIR=${conf} ${pkgs.zsh}/bin/zsh
-      '';
-  in {
-    packages = {
-      x86_64-linux = rec {
+      mkZsh = conf:
+        pkgs.writeShellScriptBin "zsh" ''
+          ZDOTDIR=${conf} ${pkgs.zsh}/bin/zsh
+        '';
+    in {
+      packages = rec {
         zsh = mkZsh zshConf;
         default = zsh;
         minimal = mkZsh zshMinimal;
       };
     };
-  };
+  in
+    flake-utils.lib.eachSystem systems build;
 }
