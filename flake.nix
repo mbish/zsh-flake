@@ -62,7 +62,7 @@
 
       mkZsh = conf:
         pkgs.writeShellScriptBin "zsh" ''
-          ZDOTDIR=${conf} ${pkgs.zsh}/bin/zsh
+          ZDOTDIR=${conf} ${pkgs.zsh}/bin/zsh $@
         '';
     in {
       packages = rec {
