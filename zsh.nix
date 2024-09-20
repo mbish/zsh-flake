@@ -2,21 +2,17 @@
   pkgs,
   lib,
   inputs,
-  vim,
   browser,
   system,
   extraConfig ? "",
   ...
 }: let
-  # mimBin = "${vim}/bin/vim";
-  # vimBin = "${vim}/bin/vim";
   ripgrepBin = "${pkgs.ripgrep}/bin/rg";
   batBin = "${pkgs.bat}/bin/bat";
   fdBin = "${pkgs.fd}/bin/fd";
   tmuxinatorBin = "${pkgs.tmuxinator}/bin/tmuxinator";
   gitBin = "${pkgs.git}/bin/git";
   nixBin = "${pkgs.nix}/bin/nix";
-  # grepBin = "${pkgs.coreutils}/bin/grep";
   ezaBin = "${pkgs.eza}/bin/eza";
   direnvBin = "${pkgs.direnv}/bin/direnv";
   chatbladeBin = "${pkgs.chatblade}/bin/chatblade";
@@ -34,10 +30,9 @@ in
           [[ -f "$1" ]] && source "$1"
       }
 
-      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${vim}
+      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin
       export GIT=${gitBin}
       export ZSH="${oh-my-zsh-source}"
-      export EDITOR=nvim
       export VISUAL=$EDITOR
       export BROWSER=${browserBin}
       export CUR_SHELL=zsh
