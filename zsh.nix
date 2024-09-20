@@ -16,7 +16,7 @@
   tmuxinatorBin = "${pkgs.tmuxinator}/bin/tmuxinator";
   gitBin = "${pkgs.git}/bin/git";
   nixBin = "${pkgs.nix}/bin/nix";
-  grepBin = "${pkgs.coreutils}/bin/grep";
+  # grepBin = "${pkgs.coreutils}/bin/grep";
   ezaBin = "${pkgs.eza}/bin/eza";
   direnvBin = "${pkgs.direnv}/bin/direnv";
   chatbladeBin = "${pkgs.chatblade}/bin/chatblade";
@@ -68,7 +68,7 @@ in
       alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
       alias make_certs="openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout server.key -out server.crt"
       alias ai="${chatbladeBin} -c 4"
-      alias killjobs="kill -9 \$(jobs -l | ${grepBin} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
+      alias killjobs="kill -9 \$(jobs -l | ${ripgrepBin}} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
       alias cim="$EDITOR \`$GIT diff --name-only\`"
       alias ls='${ezaBin}'
 
@@ -127,7 +127,7 @@ in
       }
 
       jmp () {
-          cd "$(${zBin}|${grepBin} -o "/.*"|${fzfBin} || pwd)"
+          cd "$(zshz|${ripgrepBin} -o "/.*"|${fzfBin} || pwd)"
       }
 
 
