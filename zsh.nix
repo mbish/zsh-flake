@@ -2,23 +2,12 @@
   pkgs,
   lib,
   inputs,
-  browser,
   system,
   extraConfig ? "",
   ...
 }: let
-  ripgrepBin = "${pkgs.ripgrep}/bin/rg";
-  batBin = "${pkgs.bat}/bin/bat";
-  fdBin = "${pkgs.fd}/bin/fd";
   tmuxinatorBin = "${pkgs.tmuxinator}/bin/tmuxinator";
-  gitBin = "${pkgs.git}/bin/git";
-  nixBin = "${pkgs.nix}/bin/nix";
-  ezaBin = "${pkgs.eza}/bin/eza";
-  direnvBin = "${pkgs.direnv}/bin/direnv";
   chatbladeBin = "${pkgs.chatblade}/bin/chatblade";
-  fzfBin = "${pkgs.fzf}/bin/fzf";
-  zBin = "${pkgs.z-lua}/bin/z";
-  browserBin = browser;
   powerlineConfigBin = "${pkgs.powerline}/bin/powerline-config";
   oh-my-zsh-source = "${pkgs.oh-my-zsh}/share/oh-my-zsh";
   autoSuggestions = pkgs.zsh-autosuggestions;
@@ -30,11 +19,9 @@ in
           [[ -f "$1" ]] && source "$1"
       }
 
-      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin
-      export GIT=${gitBin}
+      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${pkgs.direnv}/bin:${pkgs.fd}/bin
       export ZSH="${oh-my-zsh-source}"
       export VISUAL=$EDITOR
-      export BROWSER=${browserBin}
       export CUR_SHELL=zsh
       export TERM=xterm-256color
       export CDPATH=.:~:~/workspace:~/workspace/personal
@@ -45,27 +32,27 @@ in
       export SAVEHIST=10000000
       setopt INC_APPEND_HISTORY
       export POWERLINE_CONFIG_COMMAND=${powerlineConfigBin}
-      export FZF_DEFAULT_COMMAND='${ripgrepBin} --files --no-ignore-vcs --hidden -g\!.git'
+      export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g\!.git'
       export FZF_DEFAULT_OPTS="--bind 'ctrl-l:jump'"
-      export GIT_PAGER="${batBin} --paging=always --theme='Monokai Extended'"
+      export GIT_PAGER="bat --paging=always --theme='Monokai Extended'"
       export ZSH_AUTOSUGGEST_USE_ASYNC=1
       export ZSH_AUTOSUGGEST_STRATEGY=(history)
       export _JAVA_AWT_WM_NONREPARENTING=1
 
       alias mux="${tmuxinatorBin}"
-      alias gco='$GIT checkout'
-      alias fixup="$GIT commit -C HEAD --amend -a"
-      alias dirinit="${nixBin} flake new -t github:nix-community/nix-direnv ."
+      alias gco='git checkout'
+      alias fixup="git commit -C HEAD --amend -a"
+      alias dirinit="nix flake new -t github:nix-community/nix-direnv ."
       alias edit=$EDITOR
-      alias vim=$EDITOR
       alias nvim=$EDITOR
+      alias vim=$EDITOR
       alias zshconfig="$EDITOR ~/.zshrc"
       alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
       alias make_certs="openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout server.key -out server.crt"
       alias ai="${chatbladeBin} -c 4"
-      alias killjobs="kill -9 \$(jobs -l | ${ripgrepBin}} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
-      alias cim="$EDITOR \`$GIT diff --name-only\`"
-      alias ls='${ezaBin}'
+      alias killjobs="kill -9 \$(jobs -l | rg} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
+      alias cim="$EDITOR \`git diff --name-only\`"
+      alias ls='eza'
 
       include ${./theme.zsh-theme}
       include ~/.local.zshrc
@@ -94,7 +81,7 @@ in
 
       show_dir() {
           echo ""
-          ${ezaBin} --color=always
+          eza --color=always
           zle reset-prompt
       }
 
@@ -112,7 +99,7 @@ in
       autoload -U compinit
       compinit
 
-      eval "$(${direnvBin} hook zsh)"
+      eval "$(direnv hook zsh)"
 
       chatblade () {
           (
@@ -122,11 +109,11 @@ in
       }
 
       jmp () {
-          cd "$(zshz|${ripgrepBin} -o "/.*"|${fzfBin} || pwd)"
+          cd "$(zshz|rg -o "/.*"|fzf || pwd)"
       }
 
 
-      export FZF_CTRL_T_COMMAND="command ${fdBin} -H -L . --min-depth 1 --exclude "/sys" --exclude "/dev" --exclude "/tmp" --exclude "/proc" -c never"
+      export FZF_CTRL_T_COMMAND="command fd -H -L . --min-depth 1 --exclude "/sys" --exclude "/dev" --exclude "/tmp" --exclude "/proc" -c never"
 
       export VIM_MODE_NO_DEFAULT_BINDINGS=true
       bindkey '' autosuggest-accept

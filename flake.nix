@@ -8,11 +8,6 @@
       flake = true;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    st = {
-      url = "github:mbish/st-flake";
-      flake = true;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-utils = {
       url = "github:numtide/flake-utils";
     };
@@ -20,7 +15,6 @@
 
   outputs = {
     self,
-    st,
     nixpkgs,
     flake-utils,
     ...
@@ -32,32 +26,38 @@
         overlays = [
         ];
       };
-      zshConf = import ./zsh.nix {
+      zshConf = (import ./zsh.nix {
         inherit pkgs inputs system;
         inherit (pkgs) lib;
-        browser = "${pkgs.firefox}/bin/firefox";
         extraConfig = pkgs.lib.strings.concatStrings [
           (import ./atuin.nix {
             inherit (pkgs) lib;
             inherit pkgs system inputs;
           })
-          (import ./term.nix {
-            inherit (pkgs) lib;
-            inherit system inputs;
-          })
-          "[ -f ~/.fzf.zsh ] && source ~/.zshrc"
         ];
-      };
+      });
       zshMinimal = import ./zsh.nix {
         inherit pkgs inputs system;
         inherit (pkgs) lib;
-        browser = "${pkgs.qutebrowser}/bin/qutebrowser";
       };
 
-      mkZsh = conf:
-        pkgs.writeShellScriptBin "zsh" ''
-          ZDOTDIR=${conf} ${pkgs.zsh}/bin/zsh $@
-        '';
+      mkZsh = config:
+        pkgs.stdenv.mkDerivation {
+          name = "zsh-custom";
+
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          phases = ["installPhase"];
+          installPhase = ''
+            mkdir -p $out/share
+            mkdir -p $out/bin
+            cp ${config}/.zshrc $out/share/.zshrc
+            ln -s $out/share/.zshrc $out/share/zshrc
+            cp ${pkgs.zsh}/bin/zsh $out/bin
+            wrapProgram $out/bin/zsh \
+              --set LOCALE_ARCHIVE ${pkgs.glibcLocales}/lib/locale/locale-archive \
+              --set ZDOTDIR $out/share
+          '';
+        };
     in {
       packages = rec {
         zsh = mkZsh zshConf;

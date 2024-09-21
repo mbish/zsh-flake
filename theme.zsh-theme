@@ -26,14 +26,14 @@ aphrodite_get_welcome_symbol() {
 }
 
 gitbranch() {
-    branch=$($GIT rev-parse --abbrev-ref HEAD 2>/dev/null)
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     local result=$?
     if [ $result -eq 0 ]; then
         #git diff-index --quiet HEAD --
         #dirty=$?
         local dirty=0
         if [ $branch = 'master' ]; then
-            diffnum=$($GIT log origin/master.. 2>/dev/null|grep https://|grep -oP "D\d+")
+            diffnum=$(git log origin/master.. 2>/dev/null|grep https://|grep -oP "D\d+")
             if [ $? = 0 ]; then
                 branch="$branch++$diffnum"
             fi
