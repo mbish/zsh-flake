@@ -19,7 +19,7 @@ in
           [[ -f "$1" ]] && source "$1"
       }
 
-      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${pkgs.direnv}/bin:${pkgs.fd}/bin
+      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${pkgs.direnv}/bin:${pkgs.fd}/bin:${pkgs.bat}/bin
       export ZSH="${oh-my-zsh-source}"
       export VISUAL=$EDITOR
       export CUR_SHELL=zsh
