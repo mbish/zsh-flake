@@ -49,7 +49,7 @@ in
       alias zshconfig="$EDITOR ~/.zshrc"
       alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
       alias make_certs="openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout server.key -out server.crt"
-      alias ai="${chatbladeBin} -c 4"
+      alias ai="chatblade -c 4"
       alias killjobs="kill -9 \$(jobs -l | rg} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
       alias cim="$EDITOR \`git diff --name-only\`"
       alias ls='eza'
