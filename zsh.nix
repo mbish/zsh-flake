@@ -19,7 +19,7 @@ in
           [[ -f "$1" ]] && source "$1"
       }
 
-      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${pkgs.direnv}/bin:${pkgs.fd}/bin:${pkgs.bat}/bin
+      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${pkgs.direnv}/bin:${pkgs.fd}/bin:${pkgs.bat}/bin:${pkgs.ranger}/bin
       export ZSH="${oh-my-zsh-source}"
       export VISUAL=$EDITOR
       export CUR_SHELL=zsh
@@ -52,7 +52,7 @@ in
       alias ai="chatblade -c 4"
       alias killjobs="kill -9 \$(jobs -l | rg} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
       alias cim="$EDITOR \`git diff --name-only\`"
-      alias ls='eza'
+      alias ls="eza"
 
       include ${./theme.zsh-theme}
       include ~/.local.zshrc
@@ -91,6 +91,18 @@ in
       zle -N _expand_alias{,}
       bindkey '' _expand_alias
 
+      jmp () {
+          cd "$(zshz|rg -o "/.*"|fzf || pwd)"
+      }
+
+      jump_dir() {
+          jmp
+          zle reset-prompt
+      }
+
+      zle -N jump_dir{,}
+      bindkey '' jump_dir
+
       export KEYTIMEOUT=1
 
       autoload -U edit-command-line
@@ -106,10 +118,6 @@ in
               source ~/.config/chatblade/creds
               ${chatbladeBin} $@
           )
-      }
-
-      jmp () {
-          cd "$(zshz|rg -o "/.*"|fzf || pwd)"
       }
 
 
