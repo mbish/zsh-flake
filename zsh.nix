@@ -4,6 +4,7 @@
   inputs,
   system,
   extraConfig ? "",
+  zsh-notify,
   ...
 }: let
   tmuxinatorBin = "${pkgs.tmuxinator}/bin/tmuxinator";
@@ -19,7 +20,7 @@ in
           [[ -f "$1" ]] && source "$1"
       }
 
-      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${pkgs.direnv}/bin:${pkgs.fd}/bin:${pkgs.bat}/bin:${pkgs.ranger}/bin
+      export PATH=$PATH:${pkgs.fzf}/bin:${pkgs.git}/bin:${pkgs.ripgrep}/bin:${pkgs.eza}/bin:${pkgs.z-lua}/bin:${pkgs.atuin}/bin:${pkgs.direnv}/bin:${pkgs.fd}/bin:${pkgs.bat}/bin:${pkgs.ranger}/bin:${pkgs.wmctrl}/bin:${pkgs.xdotool}/bin
       export ZSH="${oh-my-zsh-source}"
       export VISUAL=$EDITOR
       export CUR_SHELL=zsh
@@ -67,6 +68,7 @@ in
           z
       )
       include $ZSH/oh-my-zsh.sh
+      include ${zsh-notify}/share/zsh-notify/notify.plugin.zsh
       include ${autoSuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
       updir() {

@@ -11,6 +11,10 @@
     flake-utils = {
       url = "github:numtide/flake-utils";
     };
+    zsh-notify = {
+      url = "github:marzocchi/zsh-notify";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -26,16 +30,26 @@
         overlays = [
         ];
       };
-      zshConf = (import ./zsh.nix {
+      zsh-notify = pkgs.stdenv.mkDerivation {
+        name = "zsh-notify";
+        src = inputs.zsh-notify;
+        nativeBuildInputs = [pkgs.zsh pkgs.xdotool pkgs.wmctrl];
+        installPhase = ''
+          mkdir -p $out/share/zsh-notify
+          cp -r $src/* $out/share/zsh-notify
+        '';
+      };
+      zshConf = import ./zsh.nix {
         inherit pkgs inputs system;
         inherit (pkgs) lib;
+        inherit zsh-notify;
         extraConfig = pkgs.lib.strings.concatStrings [
           (import ./atuin.nix {
             inherit (pkgs) lib;
             inherit pkgs system inputs;
           })
         ];
-      });
+      };
       zshMinimal = import ./zsh.nix {
         inherit pkgs inputs system;
         inherit (pkgs) lib;
@@ -45,7 +59,7 @@
         pkgs.stdenv.mkDerivation {
           name = "zsh-custom";
 
-          nativeBuildInputs = [ pkgs.makeWrapper ];
+          nativeBuildInputs = [pkgs.makeWrapper];
           phases = ["installPhase"];
           installPhase = ''
             mkdir -p $out/share

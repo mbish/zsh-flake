@@ -103,7 +103,8 @@
       "inputs": {
         "atuinToFc": "atuinToFc",
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "zsh-notify": "zsh-notify"
       }
     },
     "systems": {
@@ -133,6 +134,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "zsh-notify": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1682877959,
+        "narHash": "sha256-ovmnl+V1B7J/yav0ep4qVqlZOD3Ex8sfrkC92dXPLFI=",
+        "owner": "marzocchi",
+        "repo": "zsh-notify",
+        "rev": "9c1dac81a48ec85d742ebf236172b4d92aab2f3f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "marzocchi",
+        "repo": "zsh-notify",
         "type": "github"
       }
     }
