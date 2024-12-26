@@ -54,6 +54,7 @@ in
       alias killjobs="kill -9 \$(jobs -l | rg} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
       alias cim="$EDITOR \`git diff --name-only\`"
       alias ls="eza"
+      alias CAPS="xdotool key Caps_Lock"
 
       include ${./theme.zsh-theme}
       include ~/.local.zshrc
