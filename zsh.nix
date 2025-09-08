@@ -70,7 +70,7 @@ pkgs.writeTextDir ".zshrc" ''
   alias cim="$EDITOR \`git diff --name-only\`"
   alias CAPS="xdotool key Caps_Lock"
   alias work="task project:work"
-  alias noise="play -n synth brownnoise gain -15"
+  alias noise="play -n synth brownnoise gain -25"
   alias nixsudo="sudo env \"PATH=$PATH\""
 
   include ${./theme.zsh-theme}
