@@ -11,7 +11,7 @@ let
   tmuxinatorBin = "${pkgs.tmuxinator}/bin/tmuxinator";
   chatbladeBin = "${pkgs.chatblade}/bin/chatblade";
   powerlineConfigBin = "${pkgs.powerline}/bin/powerline-config";
-  oh-my-zsh-source = "${pkgs.oh-my-zsh}/share/oh-my-zsh";
+  zcomet = "${inputs.zcomet}/zcomet.zsh";
   autoSuggestions = pkgs.zsh-autosuggestions;
   bins = lib.strings.makeBinPath [
     pkgs.fzf
@@ -34,9 +34,10 @@ pkgs.writeTextDir ".zshrc" ''
   include () {
       [[ -f "$1" ]] && source "$1"
   }
-
+  export DISABLE_AUTO_UPDATE="true"
+  export DISABLE_MAGIC_FUNCTIONS="true"
+  export DISABLE_COMPFIX="true"
   export PATH=$PATH:${bins}
-  export ZSH="${oh-my-zsh-source}"
   export VISUAL=$EDITOR
   export CUR_SHELL=zsh
   export TERM=xterm-256color
@@ -63,7 +64,6 @@ pkgs.writeTextDir ".zshrc" ''
   alias nvim=$EDITOR
   alias vim=$EDITOR
   alias zshconfig="$EDITOR ~/.zshrc"
-  alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
   alias make_certs="openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout server.key -out server.crt"
   alias ai="chatblade -c 4"
   alias killjobs="kill -9 \$(jobs -l | rg} -oP \"\\d+ (running)\"|cut -f1 -d\" \") 2>/dev/null || echo 'No jobs running'"
@@ -73,6 +73,9 @@ pkgs.writeTextDir ".zshrc" ''
   alias noise="play -n synth brownnoise gain -25"
   alias nixsudo="sudo env \"PATH=$PATH\""
 
+  export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
+  export ZDOTDIR=$HOME
+  include ${zcomet}
   include ${./theme.zsh-theme}
   include ~/.local.zshrc
   HYPHEN_INSENSITIVE="true"
@@ -80,12 +83,10 @@ pkgs.writeTextDir ".zshrc" ''
   export UPDATE_ZSH_DAYS=1
   DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-  plugins=(
-      git
-      fzf
-      z
-  )
-  include $ZSH/oh-my-zsh.sh
+  zcomet load ohmyzsh plugins/fzf
+  zcomet load ohmyzsh plugins/z
+  zcomet load ohmyzsh plugins/gitfast
+
   include ${zsh-notify}/share/zsh-notify/notify.plugin.zsh
   include ${autoSuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -128,8 +129,11 @@ pkgs.writeTextDir ".zshrc" ''
   autoload -U edit-command-line
   zle -N edit-command-line
   bindkey '^g' edit-command-line
-  autoload -U compinit
-  compinit
+  autoload -Uz compinit
+  for dump in ~/.zcompdump(N.mh+24); do
+      compinit
+  done
+  compinit -C
 
   eval "$(direnv hook zsh)"
 

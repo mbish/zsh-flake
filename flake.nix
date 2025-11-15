@@ -15,6 +15,10 @@
       url = "github:marzocchi/zsh-notify";
       flake = false;
     };
+    zcomet = {
+      url = "github:agkozak/zcomet";
+      flake = false;
+    };
   };
 
   outputs = {
