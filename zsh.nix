@@ -34,7 +34,9 @@ pkgs.writeTextDir ".zshrc" ''
   include () {
       [[ -f "$1" ]] && source "$1"
   }
-
+  export DISABLE_AUTO_UPDATE="true"
+  export DISABLE_MAGIC_FUNCTIONS="true"
+  export DISABLE_COMPFIX="true"
   export PATH=$PATH:${bins}
   export ZSH="${oh-my-zsh-source}"
   export VISUAL=$EDITOR
@@ -128,8 +130,11 @@ pkgs.writeTextDir ".zshrc" ''
   autoload -U edit-command-line
   zle -N edit-command-line
   bindkey '^g' edit-command-line
-  autoload -U compinit
-  compinit
+  autoload -Uz compinit
+  for dump in ~/.zcompdump(N.mh+24); do
+      compinit
+  done
+  compinit -C
 
   eval "$(direnv hook zsh)"
 
