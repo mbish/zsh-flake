@@ -34,6 +34,7 @@ pkgs.writeTextDir ".zshrc" ''
   include () {
       [[ -f "$1" ]] && source "$1"
   }
+  export KEYTIMEOUT=1
   export CDPATH=.:~:~/workspace:~/workspace/personal
   export CUR_SHELL=zsh
   export DISABLE_AUTO_UPDATE="true"
@@ -60,7 +61,12 @@ pkgs.writeTextDir ".zshrc" ''
   export ZSH_AUTOSUGGEST_USE_ASYNC=1
   export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
   export _JAVA_AWT_WM_NONREPARENTING=1
+  export FZF_CTRL_T_COMMAND="command fd -H -L . --min-depth 1 --exclude "/sys" --exclude "/dev" --exclude "/tmp" --exclude "/proc" -c never"
+
+  export VIM_MODE_NO_DEFAULT_BINDINGS=true
+
   setopt INC_APPEND_HISTORY
+  setopt autocd
 
   alias mux="${tmuxinatorBin}"
   alias gco='git checkout'
@@ -78,16 +84,16 @@ pkgs.writeTextDir ".zshrc" ''
   alias work="task project:work"
   alias noise="play -n synth brownnoise gain -25"
   alias nixsudo="sudo env \"PATH=$PATH\""
+  alias ls="eza"
 
   include ${./theme.zsh-theme}
-  include ${zcomet}/zcomet.zsh
   include ~/.local.zshrc
-  zcomet load ohmyzsh plugins/fzf
-  zcomet load agkozak/zsh-z
-  zcomet load ohmyzsh plugins/gitfast
-
-  include ${zsh-notify}/share/zsh-notify/notify.plugin.zsh
   include ${autoSuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  include ${zcomet}/zcomet.zsh
+
+  zcomet load ohmyzsh plugins/fzf
+  zcomet load marzocchi/zsh-notify notify.plugin.zsh
+
 
   updir() {
       cd ../
@@ -123,11 +129,10 @@ pkgs.writeTextDir ".zshrc" ''
   zle -N jump_dir{,}
   bindkey '' jump_dir
 
-  export KEYTIMEOUT=1
-
   autoload -U edit-command-line
   zle -N edit-command-line
   bindkey '^g' edit-command-line
+
   autoload -Uz compinit
   for dump in ~/.zcompdump(N.mh+24); do
       compinit
@@ -143,16 +148,11 @@ pkgs.writeTextDir ".zshrc" ''
       )
   }
 
-
-  export FZF_CTRL_T_COMMAND="command fd -H -L . --min-depth 1 --exclude "/sys" --exclude "/dev" --exclude "/tmp" --exclude "/proc" -c never"
-
-  export VIM_MODE_NO_DEFAULT_BINDINGS=true
   bindkey '' autosuggest-accept
   bindkey '' up-line-or-history
   bindkey '' down-line-or-history
 
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-  alias ls="eza"
   ${extraConfig}
 ''
