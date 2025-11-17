@@ -43,10 +43,27 @@
           cp -r $src/* $out/share/zsh-notify
         '';
       };
+      zcomet = pkgs.stdenv.mkDerivation {
+        name = "zcomet";
+        src = inputs.zcomet;
+        buildInputs = [pkgs.zsh];
+        buildPhase = ''
+          zsh -c "zcompile zcomet.zsh"
+          for f in functions/*; do
+            zsh -c "zcompile \"$f\""
+          done
+        '';
+        installPhase = ''
+          mkdir -p $out
+          cp -r zcomet.zsh* $out
+          cp -r functions $out/functions
+        '';
+      };
       zshConf = import ./zsh.nix {
         inherit pkgs inputs system;
         inherit (pkgs) lib;
         inherit zsh-notify;
+        inherit zcomet;
         extraConfig = pkgs.lib.strings.concatStrings [
           (import ./atuin.nix {
             inherit (pkgs) lib;
@@ -57,6 +74,7 @@
       zshMinimal = import ./zsh.nix {
         inherit pkgs inputs system;
         inherit (pkgs) lib;
+        inherit zcomet;
       };
 
       mkZsh = config:

@@ -5,13 +5,13 @@
   system,
   extraConfig ? "",
   zsh-notify,
+  zcomet,
   ...
 }:
 let
   tmuxinatorBin = "${pkgs.tmuxinator}/bin/tmuxinator";
   chatbladeBin = "${pkgs.chatblade}/bin/chatblade";
   powerlineConfigBin = "${pkgs.powerline}/bin/powerline-config";
-  zcomet = "${inputs.zcomet}/zcomet.zsh";
   autoSuggestions = pkgs.zsh-autosuggestions;
   bins = lib.strings.makeBinPath [
     pkgs.fzf
@@ -34,27 +34,33 @@ pkgs.writeTextDir ".zshrc" ''
   include () {
       [[ -f "$1" ]] && source "$1"
   }
-  export DISABLE_AUTO_UPDATE="true"
-  export DISABLE_MAGIC_FUNCTIONS="true"
-  export DISABLE_COMPFIX="true"
-  export PATH=$PATH:${bins}
-  export VISUAL=$EDITOR
-  export CUR_SHELL=zsh
-  export TERM=xterm-256color
   export CDPATH=.:~:~/workspace:~/workspace/personal
-  export HISTTIMEFORMAT="%d/%m/%y %T "
-  export HISTFILE=$HOME/.zsh_history
-  export HISTSIZE=1000000000
-  export HISTFILESIZE=1000000000
-  export SAVEHIST=10000000
-  setopt INC_APPEND_HISTORY
-  export POWERLINE_CONFIG_COMMAND=${powerlineConfigBin}
+  export CUR_SHELL=zsh
+  export DISABLE_AUTO_UPDATE="true"
+  export DISABLE_COMPFIX="true"
+  export DISABLE_MAGIC_FUNCTIONS="true"
+  export DISABLE_UNTRACKED_FILES_DIRTY="true"
+  export DISABLE_UPDATE_PROMPT="true"
   export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g\!.git'
   export FZF_DEFAULT_OPTS="--bind 'ctrl-l:jump'"
   export GIT_PAGER="bat --paging=always --theme='Monokai Extended'"
-  export ZSH_AUTOSUGGEST_USE_ASYNC=1
+  export HISTFILE=$HOME/.zsh_history
+  export HISTFILESIZE=1000000000
+  export HISTSIZE=1000000000
+  export HISTTIMEFORMAT="%d/%m/%y %T "
+  export HYPHEN_INSENSITIVE="true"
+  export PATH=$PATH:${bins}
+  export POWERLINE_CONFIG_COMMAND=${powerlineConfigBin}
+  export SAVEHIST=10000000
+  export TERM=xterm-256color
+  export UPDATE_ZSH_DAYS=1
+  export VISUAL=$EDITOR
+  export ZDOTDIR=$HOME
   export ZSH_AUTOSUGGEST_STRATEGY=(history)
+  export ZSH_AUTOSUGGEST_USE_ASYNC=1
+  export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
   export _JAVA_AWT_WM_NONREPARENTING=1
+  setopt INC_APPEND_HISTORY
 
   alias mux="${tmuxinatorBin}"
   alias gco='git checkout'
@@ -73,18 +79,11 @@ pkgs.writeTextDir ".zshrc" ''
   alias noise="play -n synth brownnoise gain -25"
   alias nixsudo="sudo env \"PATH=$PATH\""
 
-  export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
-  export ZDOTDIR=$HOME
-  include ${zcomet}
   include ${./theme.zsh-theme}
+  include ${zcomet}/zcomet.zsh
   include ~/.local.zshrc
-  HYPHEN_INSENSITIVE="true"
-  DISABLE_UPDATE_PROMPT="true"
-  export UPDATE_ZSH_DAYS=1
-  DISABLE_UNTRACKED_FILES_DIRTY="true"
-
   zcomet load ohmyzsh plugins/fzf
-  zcomet load ohmyzsh plugins/z
+  zcomet load agkozak/zsh-z
   zcomet load ohmyzsh plugins/gitfast
 
   include ${zsh-notify}/share/zsh-notify/notify.plugin.zsh
