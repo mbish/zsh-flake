@@ -69,7 +69,6 @@ pkgs.writeTextDir ".zshrc" ''
   export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
   export _JAVA_AWT_WM_NONREPARENTING=1
   export FZF_CTRL_T_COMMAND="command fd -H -L . --min-depth 1 --exclude "/sys" --exclude "/dev" --exclude "/tmp" --exclude "/proc" -c never"
-
   export VIM_MODE_NO_DEFAULT_BINDINGS=true
 
   setopt INC_APPEND_HISTORY
@@ -109,6 +108,7 @@ pkgs.writeTextDir ".zshrc" ''
   zcomet load ohmyzsh plugins/gitfast
   zcomet load marzocchi/zsh-notify notify.plugin.zsh
 
+  bindkey -e
 
   updir() {
       cd ../
