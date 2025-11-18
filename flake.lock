@@ -104,6 +104,7 @@
         "atuinToFc": "atuinToFc",
         "flake-utils": "flake-utils_2",
         "nixpkgs": "nixpkgs",
+        "zcomet": "zcomet",
         "zsh-notify": "zsh-notify"
       }
     },
@@ -134,6 +135,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "zcomet": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1734733579,
+        "narHash": "sha256-KrLhz7BaPJTw7HmUYcttF814pp31rkBwJf8dWhM7nx8=",
+        "owner": "agkozak",
+        "repo": "zcomet",
+        "rev": "3dfe6f837479c6731e74400a233739500ec6d648",
+        "type": "github"
+      },
+      "original": {
+        "owner": "agkozak",
+        "repo": "zcomet",
         "type": "github"
       }
     },
