@@ -67,6 +67,8 @@ pkgs.writeTextDir ".zshrc" ''
 
   setopt INC_APPEND_HISTORY
   setopt autocd
+  setopt PROMPT_SUBST
+
 
   alias mux="${tmuxinatorBin}"
   alias gco='git checkout'
@@ -86,6 +88,10 @@ pkgs.writeTextDir ".zshrc" ''
   alias nixsudo="sudo env \"PATH=$PATH\""
   alias ls="eza"
 
+  autoload -Uz vcs_info
+  precmd() { vcs_info }
+  zstyle ':vcs_info:git:*' formats '%b' # To display the branch name
+
   include ${./theme.zsh-theme}
   include ~/.local.zshrc
   include ${autoSuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -93,6 +99,7 @@ pkgs.writeTextDir ".zshrc" ''
 
   zcomet load ohmyzsh plugins/fzf
   zcomet load ohmyzsh plugins/z
+  zcomet load ohmyzsh plugins/gitfast
   zcomet load marzocchi/zsh-notify notify.plugin.zsh
 
 

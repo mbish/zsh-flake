@@ -74,7 +74,7 @@ aphrodite_get_prompt() {
 
 export GREP_COLOR='1;31'
 
-PROMPT="$(aphrodite_get_prompt)"
+PROMPT='$(aphrodite_get_prompt)'
 #PS1='${debian_chroot:+($debian_chroot)}\[\033[00;96m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \$ '
 #
 check_last_exit_code() {
@@ -104,4 +104,4 @@ aphrodite_get_rprompt() {
 	echo -n "%(?..%f)%{$reset_color%}"
 }
 
-RPROMPT="$(aphrodite_get_rprompt)"
+RPROMPT='$(aphrodite_get_rprompt)'
