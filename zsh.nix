@@ -92,6 +92,7 @@ pkgs.writeTextDir ".zshrc" ''
   include ${zcomet}/zcomet.zsh
 
   zcomet load ohmyzsh plugins/fzf
+  zcomet load ohmyzsh plugins/z
   zcomet load marzocchi/zsh-notify notify.plugin.zsh
 
 
