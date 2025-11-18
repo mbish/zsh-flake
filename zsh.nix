@@ -167,6 +167,12 @@ pkgs.writeTextDir ".zshrc" ''
   bindkey '' up-line-or-history
   bindkey '' down-line-or-history
 
+  capture () {
+    tmux capture-pane -p -S -5000 | head -n-1 | vim -R -c "set nowrap | set nonumber | set signcolumn=no | set laststatus=0" + -
+  }
+  zle -N capture{,}
+  bindkey '' capture
+
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
   ${extraConfig}
